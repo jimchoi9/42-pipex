@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:32:06 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/13 21:13:52 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/13 21:33:34 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,12 @@ int main(int argc, char * const *argv, char **envp)
 
 	printf("pid before fork : %d\n", getpid());
 	int status;
+	int fd[2];
+
+	pipe(fd);
+
 	pid_t pid = fork();
+
 
 	if (pid < 0)
 	{
@@ -48,15 +53,15 @@ int main(int argc, char * const *argv, char **envp)
 	}
 	if(pid == 0)
 	{
+		dup2(1, fd[1]);
 		printf("pid child : %d\n", getpid());
-		char *arr[] = {"ls", "-al", NULL};
-		int returnv = execve("/bin/lsasd", arr, envp);
-		exit(0);
+		char *arr[] = {"test.txt", NULL};
+		int returnv = execve("/bin/cat", arr, envp);
+		exit(returnv);
 	}
-	else{
+		dup2(fd[0], 0);
 		wait(&status);
 		printf("pid parent : %d\n", getpid());
 		printf("%d ", WEXITSTATUS(status));
-	}
 	// printf("value = %d\n", returnv);
 }
