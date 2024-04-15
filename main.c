@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:32:06 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/13 21:33:34 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/15 15:32:49 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,40 @@
 int main(int argc, char * const *argv, char **envp)
 {
 
-	printf("pid before fork : %d\n", getpid());
+	// printf("pid before fork : %d\n", getpid());
 	int status;
 	int fd[2];
-
+	int i = 0;
 	pipe(fd);
 
-	pid_t pid = fork();
-
-
-	if (pid < 0)
+	pid_t pid;
+	while(i < 3)
 	{
-		printf("error\n");
+		pid = fork();
+		if (pid < 0)
+		{
+			printf("error\n");
+		}
+		else if(pid == 0)
+		{
+			printf("pid child : %d\n", getpid());
+			close(fd[0]);
+			dup2(fd[1], STDOUT_FILENO);
+			char *arr[] = {"cat","test.txt", NULL};
+			int returnv = execve("/bin/cat", arr, envp);
+			exit(returnv);
+		}
+		i++;
 	}
-	if(pid == 0)
-	{
-		dup2(1, fd[1]);
-		printf("pid child : %d\n", getpid());
-		char *arr[] = {"test.txt", NULL};
-		int returnv = execve("/bin/cat", arr, envp);
-		exit(returnv);
-	}
-		dup2(fd[0], 0);
+	while (i-- > 0) {
 		wait(&status);
+	}
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
 		printf("pid parent : %d\n", getpid());
+		char str[15];
+		read(0, str, 15);
+		printf("%s\n", str);
 		printf("%d ", WEXITSTATUS(status));
 	// printf("value = %d\n", returnv);
 }
