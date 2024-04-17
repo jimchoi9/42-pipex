@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = 
 # -Wall -Wextra -Werror
 
-SRC = main.c
+SRC = pipex_main.c pipex_parsing.c pipex_utils.c
 OBJS = $(SRC:.c=.o)
 
 all: $(NAME)
@@ -14,10 +14,10 @@ $(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(LIBFT_DIR)$(LIBFT_NAME):
-	make bonus -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
 
 clean:
-	make -C $(LIBFT_DIR) clean
+	make -C $(LIBFT_DIR) fclean
 	rm -f $(OBJS)
 
 fclean: clean
