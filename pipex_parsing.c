@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:49:31 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/17 16:57:48 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:35:17 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,3 @@ char **get_path(char **envp)
 	path = ft_split("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", ':');
 	return (path);
 }
-
-// int cmd_check(t_data *path_data, char *cmd)
-// {
-	
-// }
