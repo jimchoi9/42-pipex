@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:49:31 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/18 11:35:17 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/18 20:28:44 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char **get_path(char **envp)
 		if(ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			envp[i] += 5;
-			// printf("%s\n", envp[i]);
 			path = ft_split(envp[i], ':');
 			return (path);
 		}
@@ -30,3 +29,44 @@ char **get_path(char **envp)
 	path = ft_split("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", ':');
 	return (path);
 }
+
+char	*path_check(t_data *path_data, char *cmd)
+{
+	int i= 0;
+	int j = -1;
+	
+		cmd = ft_strjoin("/", cmd);
+	while(path_data->path[i] != NULL)
+	{
+		path_data->cmd_path = ft_strjoin(path_data->path[i], cmd);
+		if (access(path_data->cmd_path, X_OK) == 0)
+			return(path_data->cmd_path);
+		i++;
+	}
+	handle_exit("command not found", 1);
+}
+
+/*
+
+# 29: The program exits with the right status code                          [OK]
+Your pipex:
+Your tty output:
+command not found: No such file or directory
+Your exit status:
+Exit status: 1
+Expected: <128
+# 30: The output of the command is correct                                  [OK]
+Your pipex:
+Bash:
+"Now?"
+"Now," said Deep Thought.
+"Doesn't matter!" said Phouchg. "We must know it! Now!"
+"Now?" inquired Deep Thought.
+"Yes! Now ..."
+Your tty output:
+command not found: No such file or directory
+Your exit status:
+Exit status: 1
+Expected: <128
+
+*/

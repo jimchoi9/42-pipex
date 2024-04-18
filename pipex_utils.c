@@ -6,15 +6,16 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:50:34 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/18 17:53:51 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/18 20:15:01 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void handle_exit(int status)
+void handle_exit(char *str, int status)
 {
-	
+	perror(str);
+	exit(status);
 }
 
 int	file_check(int argc, char **argv, t_fd *fd)

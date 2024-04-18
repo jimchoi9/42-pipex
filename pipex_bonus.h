@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 19:59:33 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/18 20:29:07 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:15:47 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ typedef struct s_pipe
 
 } t_fd;
 
-char 	**get_path(char **envp);
-int		file_check(int argc, char **argv, t_fd *fd);
+char **get_path(char **envp);
+int	file_check(int argc, char **argv, t_fd *fd);
 void	set_stream(int fd1, int fd2, int fd3, int fd4);
-void 	handle_exit(char *str, int status);
-char	*path_check(t_data *path_data, char *cmd);
