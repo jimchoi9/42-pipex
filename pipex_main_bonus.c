@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_main.c                                       :+:      :+:    :+:   */
+/*   pipex_main_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:32:06 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/18 17:53:22 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/19 13:31:17 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 
-char	*path_check(t_data *path_data, char *cmd)
+char	*path_check(t_fd *path_data, char *cmd)
 {
 	int i= 0;
 	int j = -1;

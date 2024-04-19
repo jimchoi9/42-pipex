@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:49:31 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/18 20:28:44 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/19 13:32:06 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char **get_path(char **envp)
 	return (path);
 }
 
-char	*path_check(t_data *path_data, char *cmd)
+char	*path_check(t_fd *path_data, char *cmd)
 {
 	int i= 0;
 	int j = -1;
@@ -44,6 +44,7 @@ char	*path_check(t_data *path_data, char *cmd)
 		i++;
 	}
 	handle_exit("command not found", 1);
+	return (0);
 }
 
 /*
