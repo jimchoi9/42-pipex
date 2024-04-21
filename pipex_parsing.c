@@ -6,12 +6,11 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:49:31 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/19 13:32:06 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/21 13:14:05 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 char	**get_path(char **envp)
 {

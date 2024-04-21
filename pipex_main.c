@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:32:06 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/19 14:05:52 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/21 13:11:09 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	last_child(char *cmd, t_fd fd, char **envp, char *outfile_str)
 	execve(path, commands, envp);
 	handle_exit("execve error", 1);
 }
-
 
 int	init_data(t_fd *fd, int argc, char **envp)
 {

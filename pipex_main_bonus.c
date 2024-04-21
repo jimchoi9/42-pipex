@@ -5,207 +5,100 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 19:32:06 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/19 13:31:17 by jimchoi          ###   ########.fr       */
+/*   Created: 2024/04/21 13:11:35 by jimchoi           #+#    #+#             */
+/*   Updated: 2024/04/21 13:12:16 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
-
-char	*path_check(t_fd *path_data, char *cmd)
+void	first_child(char *cmd, t_fd fd, char **envp, char *infile_str)
 {
-	int i= 0;
-	int j = -1;
-	
-	// if (!ft_strchr(cmd, '"'))
-		// return (0);
-		cmd = ft_strjoin("/", cmd);
-	while(path_data->path[i] != NULL)
-	{
-		path_data->cmd_path = ft_strjoin(path_data->path[i], cmd);
-		// printf("%s\n", path_data->cmd_path);
-		if (access(path_data->cmd_path, X_OK) == 0)
-		{
-			i = -1;
-
-			return(path_data->cmd_path);
-		}
-		i++;
-	}
-	return(0);
-}
-
-void	first_child(char *cmd, t_data path_data, t_fd fd, char **envp)
-{
-	int		returnv;
 	char	*path;
 	char	**commands;
 
+	fd.infile = open(infile_str, O_RDONLY);
+	if (fd.infile == -1)
+		handle_exit("infile error", 1);
 	set_stream(fd.infile, fd.fd[1], fd.prev, fd.fd[0]);
 	commands = ft_split(cmd, ' ');
 	if (commands == NULL)
-	{
-		perror("cmd error");
-		exit (1);
-	}
-	path = path_check(&path_data, commands[0]);
-	if (path == NULL)
-	{
-		perror("first path error");
-		exit (1);
-	}
-	returnv = execve(path, commands, envp);
-	if (returnv == -1)
-	{
-		perror("execve error");
-		exit (1);
-	}
-	exit(returnv);
+		handle_exit("cmd error", 1);
+	path = path_check(&fd, commands[0]);
+	execve(path, commands, envp);
+	handle_exit("execve error", 1);
 }
 
-void	other_child(char *cmd, t_data path_data, t_fd fd, char **envp)
+void	other_child(char *cmd, t_fd fd, char **envp)
 {
-	int		returnv;
 	char	*path;
 	char	**commands;
 
 	set_stream(fd.prev, fd.fd[1], fd.prev, fd.fd[0]);
 	commands = ft_split(cmd, ' ');
 	if (commands == NULL)
-	{
-		perror("cmd error");
-		exit (0);
-	}
-	path = path_check(&path_data, commands[0]);
-	if (path == NULL)
-	{
-		perror("second path error");
-		exit (0);
-	}
-	returnv = execve(path, commands, envp);
-	exit(returnv);
+		handle_exit("cmd error", 1);
+	path = path_check(&fd, commands[0]);
+	execve(path, commands, envp);
+	handle_exit("execve error", 1);
 }
 
-void	last_child(char *cmd, t_data path_data, t_fd fd, char **envp)
+void	last_child(char *cmd, t_fd fd, char **envp, char *outfile_str)
 {
-	int		returnv;
 	char	*path;
 	char	**commands;
 
+	fd.outfile = open(outfile_str, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	if (fd.outfile == -1)
+		handle_exit("outfile error", 1);
 	set_stream(fd.prev, fd.outfile, fd.prev, fd.fd[0]);
 	commands = ft_split(cmd, ' ');
 	if (commands == NULL)
-	{
-		perror("cmd error");
-		exit (0);
-	}
-	path = path_check(&path_data, commands[0]);
-	if (path == NULL)
-	{
-		perror("first path error");
-		exit (0);
-	}
-	returnv = execve(path, commands, envp);
-	if (returnv == -1)
-	{
-		perror("execve error");
-		exit (0);
-	}
-	exit(returnv);
+		handle_exit("cmd error", 1);
+	path = path_check(&fd, commands[0]);
+	execve(path, commands, envp);
+	handle_exit("execve error", 1);
 }
 
-
-int main(int argc, char **argv, char **envp)
+int	init_data(t_fd *fd, int argc, char **envp)
 {
+	if (argc != 5)
+		handle_exit("arguments error", 1);
+	fd->path = get_path(envp);
+	fd->prev = dup(0);
+	return (-1);
+}
+// void check_leaks(void)
+// {
+// 	system("leaks pipex");
+// }
+//     atexit(check_leaks);
 
-	int status;
-	int i = 0;
-	pid_t pid;
-	t_fd fd;
-	t_data path_data;
+int	main(int argc, char **argv, char **envp)
+{
+	int		i;
+	pid_t	pid;
+	t_fd	fd;
 
-	if (argc < 5)
-	{
-		perror("too few arguments");
-		exit (1);
-	}
-	path_data.path = get_path(envp);
-	fd.prev = dup(0);
-	// file_check(argc, argv, &fd);
-	while(i < argc - 3)
+	i = init_data(&fd, argc, envp);
+	while (++i < argc - 3)
 	{
 		pipe(fd.fd);
 		pid = fork();
 		if (pid < 0)
+			handle_exit("pid error", 1);
+		if (pid == 0)
 		{
-			perror("pid error");
-			exit (1);
-		}
-		else if(pid == 0)
-		{
-			if (i == 0 && argc - 3 == 1)
-			{
-				file_check(argc, argv, &fd);
-				set_stream(fd.infile, fd.outfile, fd.fd[1], fd.prev);
-				close(fd.fd[0]);
-				char	*path;
-				char	**commands;
-				commands = ft_split(argv[i + 2], ' ');
-				if (commands == NULL)
-				{
-					perror("cmd error");
-					exit (1);
-				}
-				path = path_check(&path_data, commands[0]);
-				if (path == NULL)
-				{
-					perror("first path error");
-					exit (1);
-				}
-				if (execve(path, commands, envp) == -1)
-				{
-					perror("execve error");
-					exit (127);
-				}
-			}
-			if (i == 0 && argc - 3 != 1)
-			{
-				fd.infile = open(argv[1], O_RDONLY);
-				if (fd.infile == -1)
-				{
-					perror("infile error");
-					exit (1);
-				}
-				first_child(argv[i + 2], path_data, fd, envp);
-			}
-			else if(i == argc - 4)
-			{
-				fd.outfile = open(argv[argc-1], O_RDWR | O_TRUNC | O_CREAT , 0644);
-				// fd.outfile = open(argv[argc-1], O_RDWR | O_TRUNC);
-				if (fd.outfile == -1)
-				{
-					perror("outfile error");
-					exit (1);
-				}
-				last_child(argv[i + 2], path_data, fd, envp);
-			}
-			else 
-				other_child(argv[i + 2], path_data, fd, envp);
+			if (i == 0)
+				first_child(argv[i + 2], fd, envp, argv[1]);
+			else if (i == argc - 4)
+				last_child(argv[i + 2], fd, envp, argv[argc - 1]);
+			else
+				other_child(argv[i + 2], fd, envp);
 		}
 		close(fd.prev);
 		close(fd.fd[1]);
 		fd.prev = fd.fd[0];
-		i++;
 	}
-	close(fd.fd[0]);
-	close(fd.infile);
-	close(fd.outfile);
-	close(fd.prev);
-	int ret;
-	while (i-- > 0) {
-		if (wait(&status) == pid)
-			ret = WEXITSTATUS(status);
-	}
-	return (ret);
+	return (clean_up_resources(&fd, pid, i));
 }

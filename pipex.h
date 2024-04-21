@@ -6,37 +6,33 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 19:59:33 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/19 13:30:25 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/21 13:10:52 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include "./libft/libft.h"
+#ifndef PIPEX_H
+# define PIPEX_H
 
-typedef struct s_data
-{
-	char	**path;
-	char	*cmd_path;
-
-
-} t_data;
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include "./libft/libft.h"
 
 typedef struct s_pipe
 {
-	int	fd[2];
-	int	prev;
-	int infile;
-	int outfile;
+	int		fd[2];
+	int		prev;
+	int		infile;
+	int		outfile;
 	char	**path;
 	char	*cmd_path;
+}			t_fd;
 
-} t_fd;
-
-char 	**get_path(char **envp);
-int		file_check(int argc, char **argv, t_fd *fd);
+char	**get_path(char **envp);
 void	set_stream(int fd1, int fd2, int fd3, int fd4);
-void 	handle_exit(char *str, int status);
+void	handle_exit(char *str, int status);
+int		clean_up_resources(t_fd *fd, pid_t pid, int count);
 char	*path_check(t_fd *path_data, char *cmd);
+
+#endif
