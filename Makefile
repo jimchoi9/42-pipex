@@ -1,5 +1,5 @@
 NAME = pipex
-LIBFT_DIR = ./libft/
+LIBFT_DIR = ./libft_src/
 LIBFT_NAME = libft.a
 CC = cc
 CFLAGS = 

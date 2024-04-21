@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:32:06 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/21 13:11:09 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/21 13:49:34 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,18 @@ int	main(int argc, char **argv, char **envp)
 		pipe(fd.fd);
 		pid = fork();
 		if (pid < 0)
-			handle_exit("pid error", 1);
+		{
+			//자식프로세스가 종료되지 않았는데 부모가 종료되는 경우 고려해주기
+			handle_exit("pid error", clean_up_resources(&fd, pid, i));
+		}
 		if (pid == 0)
 		{
 			if (i == 0)
 				first_child(argv[i + 2], fd, envp, argv[1]);
 			else if (i == argc - 4)
 				last_child(argv[i + 2], fd, envp, argv[argc - 1]);
-			else
-				other_child(argv[i + 2], fd, envp);
+			// else
+			// 	other_child(argv[i + 2], fd, envp);
 		}
 		close(fd.prev);
 		close(fd.fd[1]);

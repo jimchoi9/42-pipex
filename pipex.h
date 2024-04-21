@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 19:59:33 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/21 13:10:52 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/21 13:35:04 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include "./libft/libft.h"
+# include "./libft_src/libft.h"
 
 typedef struct s_pipe
 {
