@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                      :+:      :+:    :+:   */
+/*   bonus_pipex.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 19:59:33 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/22 12:47:43 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/22 21:18:42 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_BONUS_H
-# define PIPEX_BONUS_H
+#ifndef BONUS_PIPEX_H
+# define BONUS_PIPEX_H
 
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include "./libft/libft.h"
-
+# include "./libft_src/libft.h"
+#include <stdio.h>
 typedef struct s_data
 {
 	int		fd[2];
@@ -27,6 +27,7 @@ typedef struct s_data
 	int		outfile;
 	char	**path;
 	char	*cmd_path;
+	pid_t	pid;
 }			t_data;
 
 char	**get_path(char **envp);

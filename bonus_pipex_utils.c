@@ -6,11 +6,11 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:50:34 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/22 12:46:26 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/22 21:00:16 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "bonus_pipex.h"
 
 void	handle_exit(char *str, int status)
 {

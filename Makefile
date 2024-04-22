@@ -5,8 +5,10 @@ CC = cc
 CFLAGS = 
 # -Wall -Wextra -Werror
 
-SRC = pipex_main.c pipex_parsing.c pipex_utils.c
-OBJS = $(SRC:.c=.o)
+SRC_M = pipex_main.c pipex_parsing.c pipex_utils.c
+SRC_B = bonus_pipex_main.c bonus_pipex_parsing.c bonus_pipex_utils.c 
+SRCS = $(if $(filter bonus, $(MAKECMDGOALS)), $(SRC_B), $(SRC_M))
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
@@ -15,6 +17,9 @@ $(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS)
 
 $(LIBFT_DIR)$(LIBFT_NAME):
 	make -C $(LIBFT_DIR)
+
+$(OBJS)	:	$(SRCS)
+	$(CC) $(CFLAGS) -c $^
 
 clean:
 	make -C $(LIBFT_DIR) fclean
@@ -26,4 +31,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+bonus :
+
+.PHONY: bonus all clean fclean re

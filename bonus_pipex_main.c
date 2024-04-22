@@ -6,11 +6,11 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 13:11:35 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/22 12:50:53 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/22 21:00:24 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "bonus_pipex.h"
 
 void	first_child(char *cmd, t_data fd, char **envp, char *infile_str)
 {
@@ -80,7 +80,12 @@ int	main(int argc, char **argv, char **envp)
 	pid_t	pid;
 	t_data	fd;
 
-	i = init_data(&fd, argc, envp);
+	if (ft_strncmp("here_doc", argv[1], 8) == 0)
+	{
+		printf("here_doc\n");
+	}
+	else
+		i = init_data(&fd, argc, envp);
 	while (++i < argc - 3)
 	{
 		pipe(fd.fd);
