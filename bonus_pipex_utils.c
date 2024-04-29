@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils_bonus.c                                :+:      :+:    :+:   */
+/*   bonus_pipex_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:50:34 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/22 21:00:16 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/29 11:51:14 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	handle_exit(char *str, int status)
 
 void	set_stream(int fd1, int fd2, int fd3, int fd4)
 {
+printf("set_stream");
+
 	if (dup2(fd1, STDIN_FILENO) == -1 || dup2(fd2, STDOUT_FILENO) == -1)
 	{
 		perror("dup2 error");
@@ -36,7 +38,7 @@ int	clean_up_resources(t_data *fd, int count)
 	int	i;
 	int	status;
 	int	ret;
-
+printf("cleanup resources");
 	i = -1;
 	close(fd->infile);
 	close(fd->outfile);
