@@ -1,8 +1,10 @@
 NAME = pipex
+NAME_B = pipex
 LIBFT_DIR = ./libft_src/
 LIBFT_NAME = libft.a
 CC = cc
-CFLAGS = # -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
+INCLUDES = -I.
 
 SRC_MAIN = pipex_main.c pipex_parsing.c pipex_utils.c
 SRC_BONUS = bonus_pipex_main.c bonus_pipex_parsing.c bonus_pipex_utils.c
@@ -14,13 +16,14 @@ OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+$(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS) 
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $^
 
-bonus: $(NAME)_bonus
+bonus: BONUS
 
-$(NAME)_bonus: $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS_BONUS)
-	$(CC) $(CFLAGS) -o $@ $^
+BONUS: $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS_BONUS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $^
+	touch $@
 
 $(LIBFT_DIR)$(LIBFT_NAME):
 	make -C $(LIBFT_DIR)

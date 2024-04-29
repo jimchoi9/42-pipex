@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:32:06 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/22 12:44:27 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/29 19:36:14 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,6 @@ void	first_child(char *cmd, t_data fd, char **envp, char *infile_str)
 	if (fd.infile == -1)
 		handle_exit("infile error", 1);
 	set_stream(fd.infile, fd.fd[1], fd.prev, fd.fd[0]);
-	commands = ft_split(cmd, ' ');
-	if (commands == NULL)
-		handle_exit("cmd error", 1);
-	path = path_check(&fd, commands[0]);
-	execve(path, commands, envp);
-	handle_exit("execve error", 1);
-}
-
-void	other_child(char *cmd, t_data fd, char **envp)
-{
-	char	*path;
-	char	**commands;
-
-	set_stream(fd.prev, fd.fd[1], fd.prev, fd.fd[0]);
 	commands = ft_split(cmd, ' ');
 	if (commands == NULL)
 		handle_exit("cmd error", 1);
@@ -68,27 +54,20 @@ int	init_data(t_data *fd, int argc, char **envp)
 	fd->prev = dup(0);
 	return (-1);
 }
-// void check_leaks(void)
-// {
-// 	system("leaks pipex");
-// }
-//     atexit(check_leaks);
 
 int	main(int argc, char **argv, char **envp)
 {
 	int		i;
-	pid_t	pid;
 	t_data	fd;
 
+	fd.pid = 1;
 	i = init_data(&fd, argc, envp);
 	while (++i < argc - 3)
 	{
 		pipe(fd.fd);
 		fd.pid = fork();
 		if (fd.pid < 0)
-		{
 			handle_exit("pid error", clean_up_resources(&fd, i));
-		}
 		if (fd.pid == 0)
 		{
 			if (i == 0)

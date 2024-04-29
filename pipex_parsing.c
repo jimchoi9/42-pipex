@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:49:31 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/22 21:05:27 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/04/29 19:22:02 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	*path_check(t_data *path_data, char *cmd)
 	int	i;
 
 	i = 0;
+	if (cmd == NULL)
+		handle_exit("command not found", 127);
 	cmd = ft_strjoin("/", cmd);
 	while (path_data->path[i] != NULL)
 	{
@@ -45,6 +47,6 @@ char	*path_check(t_data *path_data, char *cmd)
 			return (path_data->cmd_path);
 		i++;
 	}
-	handle_exit("command not found", 1);
+	handle_exit("command not found", 127);
 	return (0);
 }
