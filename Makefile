@@ -16,12 +16,13 @@ OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS) 
+$(NAME):  $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS) 
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $^
+	rm -rf BONUS
 
 bonus: BONUS
 
-BONUS: $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS_BONUS)
+BONUS:  $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS_BONUS) 
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $^
 	touch $@
 
@@ -37,6 +38,7 @@ $(OBJS_BONUS): $(SRCS_BONUS)
 clean:
 	make -C $(LIBFT_DIR) fclean
 	rm -f $(OBJS) $(OBJS_BONUS)
+	rm -rf BONUS
 
 fclean: clean
 	make -C $(LIBFT_DIR) fclean

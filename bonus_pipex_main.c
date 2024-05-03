@@ -6,7 +6,7 @@
 /*   By: jimchoi <jimchoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 13:11:35 by jimchoi           #+#    #+#             */
-/*   Updated: 2024/04/29 19:47:28 by jimchoi          ###   ########.fr       */
+/*   Updated: 2024/05/03 12:01:58 by jimchoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	first_child(char *cmd, t_data fd, char **envp, char *infile_str)
 {
 	char	*path;
 	char	**commands;
+	int		i;
 
+	i = -1;
 	fd.infile = open(infile_str, O_RDONLY);
 	if (fd.infile == -1)
 		handle_exit("infile error", 1);
@@ -25,29 +27,39 @@ void	first_child(char *cmd, t_data fd, char **envp, char *infile_str)
 	if (commands == NULL)
 		handle_exit("cmd error", 1);
 	path = path_check(&fd, commands[0]);
-	execve(path, commands, envp);
-	handle_exit("execve error", 1);
+	while (fd.path[++i] != NULL)
+		free(fd.path[i]);
+	free(fd.path);
+	if (execve(path, commands, envp) == -1)
+		handle_exit("execve error", 1);
 }
 
 void	other_child(char *cmd, t_data fd, char **envp)
 {
 	char	*path;
 	char	**commands;
+	int		i;
 
+	i = -1;
 	set_stream(fd.prev, fd.fd[1], fd.prev, fd.fd[0]);
 	commands = ft_split(cmd, ' ');
 	if (commands == NULL)
 		handle_exit("cmd error", 1);
 	path = path_check(&fd, commands[0]);
-	execve(path, commands, envp);
-	handle_exit("execve error", 1);
+	while (fd.path[++i] != NULL)
+		free(fd.path[i]);
+	free(fd.path);
+	if (execve(path, commands, envp) == -1)
+		handle_exit("execve error", 1);
 }
 
 void	last_child(char *cmd, t_data fd, char **envp, char *outfile_str)
 {
 	char	*path;
 	char	**commands;
+	int		i;
 
+	i = -1;
 	fd.outfile = open(outfile_str, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (fd.outfile == -1)
 		handle_exit("outfile error", 1);
@@ -56,8 +68,11 @@ void	last_child(char *cmd, t_data fd, char **envp, char *outfile_str)
 	if (commands == NULL)
 		handle_exit("cmd error", 1);
 	path = path_check(&fd, commands[0]);
-	execve(path, commands, envp);
-	handle_exit("execve error", 1);
+	while (fd.path[++i] != NULL)
+		free(fd.path[i]);
+	free(fd.path);
+	if (execve(path, commands, envp) == -1)
+		handle_exit("execve error", 1);
 }
 
 int	init_data(t_data *fd, int argc, char **envp)
